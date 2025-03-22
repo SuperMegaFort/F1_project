@@ -1,0 +1,9 @@
+services:
+  es-wem-labo01:
+    container_name: F1_project
+    image: nshou/elasticsearch-kibana
+    environment:
+      - SSL_MODE=false
+    ports:
+      - 9200:9200
+      - 5601:5601
