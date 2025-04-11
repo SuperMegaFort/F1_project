@@ -1,0 +1,33 @@
+F1 Driver Standings Data (Scraped on 2025-03-26 14:12:37.695331)
+--------------------2025 Driver Standings--------------------------------------------------
+1-Lando Norris             44        McLaren Mercedes
+2-Max Verstappen           36        Red Bull Racing Honda RBPT
+3-George Russell           35        Mercedes
+4-Oscar Piastri            34        McLaren Mercedes
+5-Kimi Antonelli           22        Mercedes
+6-Alexander Albon          16        Williams Mercedes
+7-Esteban Ocon             10        Haas Ferrari
+8-Lance Stroll             10        Aston Martin Aramco Mercedes
+9-Lewis Hamilton           9         Ferrari
+10-Charles Leclerc          8         Ferrari
+11-Nico Hulkenberg          6         Kick Sauber Ferrari
+12-Oliver Bearman           4         Haas Ferrari
+13-Yuki Tsunoda             3         Racing Bulls Honda RBPT
+14-Carlos Sainz             1         Williams Mercedes
+15-Isack Hadjar             0         Racing Bulls Honda RBPT
+16-Pierre Gasly             0         Alpine Renault
+17-Liam Lawson              0         Red Bull Racing Honda RBPT
+18-Jack Doohan              0         Alpine Renault
+19-Gabriel Bortoleto        0         Kick Sauber Ferrari
+
+--------------- Total points collected by teams (Alphabetical)---------------
+Alpine Renault           0.0
+Aston Martin Aramco Mercedes 10.0
+Ferrari                  17.0
+Haas Ferrari             14.0
+Kick Sauber Ferrari      6.0
+McLaren Mercedes         78.0
+Mercedes                 57.0
+Racing Bulls Honda RBPT  3.0
+Red Bull Racing Honda RBPT 36.0
+Williams Mercedes        17.0
