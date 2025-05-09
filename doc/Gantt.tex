@@ -1,0 +1,110 @@
+\documentclass{standalone}
+\usepackage{pgfgantt}
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{xcolor}
+
+\begin{document}
+
+% Couleurs pour les tâches F1 Project (conservées)
+\definecolor{phase1color}{HTML}{BDE0FE} % Bleu Clair (Init)
+\definecolor{phase2color}{HTML}{FFDDA1} % Jaune Pâle (Data Core)
+\definecolor{phase3color}{HTML}{FCAE7C} % Orange Clair (Modèle)
+\definecolor{phase4color}{HTML}{A2D2FF} % Bleu Moyen (UI)
+\definecolor{phase5color}{HTML}{AFE1AF} % Vert Pâle (Tests/Doc)
+\definecolor{milestonecolor}{HTML}{FF6B6B} % Rouge (Milestone)
+
+\begin{ganttchart}[
+    % --- Options générales ---
+    time slot format=isodate-yearmonthday, % Format de date YYYY-MM-DD
+    vgrid={*1{dotted}}, % Lignes verticales jours (pointillées)
+    hgrid=true,         % Lignes horizontales tâches (continues)
+    x unit=0.45cm,      % Largeur d'une unité de temps (jour) - Augmenté pour meilleure lisibilité
+    bar height=0.5,     % Hauteur des barres de tâches
+    bar topshift=0.15,  % Ajustement vertical des barres
+    bar label font=\scriptsize, % Police pour labels des tâches
+    bar/.style={fill=blue!40},  % Couleur par défaut (surchargée par phase)
+    group/.style={fill=gray!25}, % Style pour les groupes (phases)
+    group label font=\small\bfseries, % Police pour labels des phases
+    group rightshift=0,
+    group topshift=0.6,
+    group height=0.3,
+    group spacing=0.4, % Espacement vertical entre les phases
+    milestone/.style={fill=milestonecolor, shape=diamond, minimum width=0.5cm, minimum height=0.5cm, inner sep=0pt}, % Style pour les jalons (diamant)
+    milestone label font=\tiny\bfseries, % Police pour labels des jalons
+    milestone label node/.append style={anchor=south, yshift=-2pt}, % Position label jalon
+    % --- Titre ---
+    title height=1.2,
+    title label font=\normalsize\bfseries,
+    % --- Configuration du calendrier ---
+    calendar week text={Sem. %W}, % Afficher "Sem." avant le numéro de semaine
+    month label font=\small\bfseries,
+    month label node/.append style={anchor=south},
+    week label font=\scriptsize,
+    week label node/.append style={anchor=north},
+    day label font=\tiny,
+    day label node/.append style={anchor=north},
+    canvas/.append style={draw=none}, % Supprime le cadre extérieur
+    % --- Marqueur "Aujourd'hui" ---
+    today=2025-04-23, % Date actuelle (mise à jour)
+    today rule/.style={draw=red!80!black, very thick, dashed}, % Style pour la ligne du jour
+    today label=Auj., % Label court pour la ligne du jour
+    today label font=\tiny\bfseries,
+    today label node/.append style={anchor=south west, text=red!80!black}
+    % --- Plage de dates du Gantt ---
+    % Couvre du Lundi 7 Avril au Lundi 23 Juin 2025
+]{2025-04-07}{2025-06-23} % Plage ajustée au nouveau planning
+
+    % Titre du Gantt (largeur ajustée automatiquement si non spécifiée)
+    \gantttitle{Planification Projet F1 Data (Avril - Juin 2025)}{78} \\ % Ajusté approximativement au nombre de jours affichés
+
+    % Calendrier
+    \gantttitlecalendar{
+        month=name, % Nom complet du mois
+        week= W,    % Numéro de semaine avec 'W'
+        day=little  % Numéro du jour seul
+    } \\
+
+    % --- Phase 1: Initialisation & Exploration (1.5 semaines: 11/04 - 25/04) ---
+    \ganttgroup[group/.append style={fill=gray!30}]{Phase 1: Init. \& Exploration}{2025-04-11}{2025-04-25} \\
+    \ganttbar[bar/.style={fill=phase1color}]{Config. Environnement Dev}{2025-04-11}{2025-04-14} \\
+    \ganttbar[bar/.style={fill=phase1color}]{Analyse Sources (\texttt{F1.com}, \texttt{FastF1})}{2025-04-14}{2025-04-18} \\
+    \ganttbar[bar/.style={fill=phase1color}]{Définition Structure CSV}{2025-04-17}{2025-04-22} \\
+    \ganttbar[bar/.style={fill=phase1color}]{Dév. Scraper Prototype}{2025-04-21}{2025-04-25} \\
+    \ganttmilestone{P1 Fin}{2025-04-25} \\
+
+    % --- Phase 2: Développement Core Data (3 semaines: 28/04 - 16/05) ---
+    \ganttgroup[group/.append style={fill=gray!30}]{Phase 2: Dév. Core Data}{2025-04-28}{2025-05-16} \\
+    \ganttbar[bar/.style={fill=phase2color}]{Dév. Scraper Complet}{2025-04-28}{2025-05-07} \\
+    \ganttbar[bar/.style={fill=phase2color}]{Intégration API \texttt{FastF1}}{2025-05-01}{2025-05-09} \\
+    \ganttbar[bar/.style={fill=phase2color}]{Scripts Gestion CSV}{2025-05-05}{2025-05-13} \\
+    \ganttbar[bar/.style={fill=phase2color}]{Nettoyage/Prétraitement Base}{2025-05-09}{2025-05-16} \\
+    \ganttmilestone{P2 Fin}{2025-05-16} \\
+
+    % --- Phase 3: Développement Modèle & Prédiction (~2 semaines: 19/05 - 30/05) ---
+    \ganttgroup[group/.append style={fill=gray!30}]{Phase 3: Dév. Modèle \& Prédiction}{2025-05-19}{2025-05-30} \\
+    \ganttbar[bar/.style={fill=phase3color}]{Feature Engineering}{2025-05-19}{2025-05-23} \\
+    \ganttbar[bar/.style={fill=phase3color}]{Entraînement/Évaluation Modèles ML}{2025-05-21}{2025-05-28} \\
+    \ganttbar[bar/.style={fill=phase3color}]{Script Génération Prédictions}{2025-05-26}{2025-05-30} \\
+    \ganttmilestone{P3 Fin}{2025-05-30} \\
+
+    % --- Phase 4: Développement Interface Utilisateur (~2 semaines: 02/06 - 13/06) ---
+    \ganttgroup[group/.append style={fill=gray!30}]{Phase 4: Dév. Interface Utilisateur}{2025-06-02}{2025-06-13} \\
+    \ganttbar[bar/.style={fill=phase4color}]{Choix Final UI (Dash/Streamlit)}{2025-06-02}{2025-06-02} \\ % Tâche courte
+    \ganttbar[bar/.style={fill=phase4color}]{Dév UI (Affichage Données)}{2025-06-03}{2025-06-09} \\
+    \ganttbar[bar/.style={fill=phase4color}]{Dév UI (Affichage Prédictions)}{2025-06-06}{2025-06-11} \\
+    \ganttbar[bar/.style={fill=phase4color}]{Intégration UI}{2025-06-10}{2025-06-13} \\
+    \ganttmilestone{P4 Fin}{2025-06-13} \\
+
+    % --- Phase 5: Tests, Raffinement & Finalisation (~0.5 semaine: 12/06 - 16/06) ---
+    % Chevauche légèrement Phase 4 pour permettre les tests au fur et à mesure
+    \ganttgroup[group/.append style={fill=gray!30}]{Phase 5: Tests \& Finalisation}{2025-06-12}{2025-06-16} \\
+    \ganttbar[bar/.style={fill=phase5color}]{Tests d'Intégration}{2025-06-12}{2025-06-13} \\
+    \ganttbar[bar/.style={fill=phase5color}]{Finalisation Documentation (README)}{2025-06-13}{2025-06-16} \\
+    \ganttbar[bar/.style={fill=phase5color}]{Validation & Démo Finale}{2025-06-16}{2025-06-16} \\ % Tâche d'un jour
+    \ganttmilestone{Fin Projet}{2025-06-16} \\
+
+\end{ganttchart}
+
+\end{document}
