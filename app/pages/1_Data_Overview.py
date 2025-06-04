@@ -2,7 +2,6 @@
 import streamlit as st
 import pandas as pd
 # Import shared functions and constants from utils.py
-# Assurez-vous que utils.py est dans le répertoire racine de votre projet
 from utils import (
     load_data,
     convert_df_to_csv,
@@ -26,21 +25,19 @@ st.sidebar.header("Filtres pour le Tableau")
 selected_session_name_table = st.sidebar.selectbox(
     "Choisissez un type de session",
     list(SESSION_FILES.keys()),
-    key="table_session_select" # Clé unique pour ce widget
+    key="table_session_select"
 )
 
 file_to_load_table = SESSION_FILES.get(selected_session_name_table)
 df_current_session = load_data(file_to_load_table) if file_to_load_table else pd.DataFrame()
 
 if not df_current_session.empty:
-    # Year filter
-    # Assure que YEAR_COLUMN est traité comme string pour la cohérence du filtre "Toutes"
     df_current_session[YEAR_COLUMN] = df_current_session[YEAR_COLUMN].astype(str)
     available_years_table = ["Toutes"] + sorted(df_current_session[YEAR_COLUMN].unique(), reverse=True)
     selected_year_table = st.sidebar.selectbox(
         "Choisissez une année",
         available_years_table,
-        key="table_year_select" # Clé unique
+        key="table_year_select"
     )
 
     df_filtered_by_year_table = df_current_session.copy()
@@ -53,16 +50,15 @@ if not df_current_session.empty:
         selected_gp_table = st.sidebar.selectbox(
             "Choisissez un Grand Prix",
             available_gp_table,
-            key="table_gp_select" # Clé unique
+            key="table_gp_select"
         )
 
         df_filtered_by_gp_table = df_filtered_by_year_table.copy()
         if selected_gp_table != "Tous":
             df_filtered_by_gp_table = df_filtered_by_year_table[df_filtered_by_year_table[GP_NAME_COLUMN] == selected_gp_table]
     else:
-        df_filtered_by_gp_table = df_filtered_by_year_table # Pas de filtre GP si colonne absente ou df vide
+        df_filtered_by_gp_table = df_filtered_by_year_table
 
-    # Column selection
     if not df_filtered_by_gp_table.empty:
         all_columns = df_filtered_by_gp_table.columns.tolist()
         default_cols_candidates = [GP_NAME_COLUMN, YEAR_COLUMN, 'driver_name', 'constructor_name', 'position', 'laps', 'time', 'points']
@@ -74,12 +70,11 @@ if not df_current_session.empty:
             "Colonnes à afficher",
             all_columns,
             default=default_columns,
-            key="table_column_select" # Clé unique
+            key="table_column_select"
         )
     else:
         selected_columns_table = []
 
-    # Display logic
     if not df_filtered_by_gp_table.empty and selected_columns_table:
         st.success(f"Affichage des données pour : Session '{selected_session_name_table}', Année '{selected_year_table}', Grand Prix '{selected_gp_table}'.")
         st.dataframe(df_filtered_by_gp_table[selected_columns_table], use_container_width=True)

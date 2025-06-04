@@ -1,4 +1,4 @@
-# pages/2_📊_Data_Visualisation.py
+# pages/2_Data_Visualisation.py
 import streamlit as st
 import pandas as pd
 import plotly.express as px
@@ -66,7 +66,6 @@ with st.container(border=True):
 
             driver_standings = df_year_drivers.groupby(VIS_DRIVER_COL)[POINTS_COL].sum().reset_index()
             driver_standings = driver_standings.sort_values(by=POINTS_COL, ascending=False).reset_index(drop=True)
-            # driver_standings.index = driver_standings.index + 1 # Optionnel: pour un rang basé sur 1
 
             if driver_standings.empty:
                 st.info(f"Aucune donnée de points de pilotes trouvée pour l'année {selected_year_drivers}.")
@@ -75,6 +74,7 @@ with st.container(border=True):
                     driver_standings,
                     x=VIS_DRIVER_COL,
                     y=POINTS_COL,
+                    text_auto=True,
                     title=f"Classement des Pilotes - {selected_year_drivers}",
                     labels={VIS_DRIVER_COL: "Pilote", POINTS_COL: "Total des Points"},
                     color=POINTS_COL,
@@ -91,7 +91,6 @@ with st.container(border=True):
     if DF_RACES_GLOBAL.empty:
         st.info("Données de course non disponibles pour générer le classement des écuries.")
     else:
-        # Vérifier les colonnes nécessaires
         required_cols_plot_constructors = [YEAR_COLUMN, CONSTRUCTOR_COL, POINTS_COL]
         missing_cols_constructors = [col for col in required_cols_plot_constructors if col not in DF_RACES_GLOBAL.columns]
 
@@ -101,13 +100,12 @@ with st.container(border=True):
                 f"Veuillez vérifier les constantes `CONSTRUCTOR_COL` et `POINTS_COL` dans `utils.py` et les données du fichier '{race_file_path}'."
             )
         else:
-            # On peut réutiliser available_years_annual car il provient des mêmes données globales
-            if 'available_years_annual' not in locals(): # Au cas où la section précédente aurait eu un souci
+            if 'available_years_annual' not in locals():
                  available_years_annual = sorted(DF_RACES_GLOBAL[YEAR_COLUMN].unique(), reverse=True)
 
             selected_year_constructors = st.selectbox(
                 "Choisissez une année pour le classement des écuries",
-                available_years_annual, # Réutilisation des années disponibles
+                available_years_annual,
                 key="annual_constructor_year_select"
             )
 
@@ -116,7 +114,6 @@ with st.container(border=True):
 
             constructor_standings = df_year_constructors.groupby(CONSTRUCTOR_COL)[POINTS_COL].sum().reset_index()
             constructor_standings = constructor_standings.sort_values(by=POINTS_COL, ascending=False).reset_index(drop=True)
-            # constructor_standings.index = constructor_standings.index + 1 # Optionnel
 
             if constructor_standings.empty:
                 st.info(f"Aucune donnée de points d'écuries trouvée pour l'année {selected_year_constructors}.")
@@ -125,6 +122,7 @@ with st.container(border=True):
                     constructor_standings,
                     x=CONSTRUCTOR_COL,
                     y=POINTS_COL,
+                    text_auto=True,
                     title=f"Classement des Écuries - {selected_year_constructors}",
                     labels={CONSTRUCTOR_COL: "Écurie", POINTS_COL: "Total des Points"},
                     color=POINTS_COL,
@@ -135,7 +133,7 @@ with st.container(border=True):
 
 st.markdown("---")
 
-# --- Section 3: Classement d'un Pilote par Année et Session (Graphique existant) ---
+# --- Section 3: Classement d'un Pilote par Année et Session ---
 st.subheader("📈 Performance d'un Pilote (Course par Course)")
 with st.container(border=True):
     vis_session_options_perf = list(SESSION_FILES.keys())
@@ -145,7 +143,7 @@ with st.container(border=True):
         selected_session_perf = st.selectbox(
             "1. Choisissez une session",
             vis_session_options_perf,
-            key="driver_race_perf_session_select" # Clé renommée
+            key="driver_race_perf_session_select"
         )
 
     file_to_load_perf = SESSION_FILES.get(selected_session_perf)
@@ -171,7 +169,7 @@ with st.container(border=True):
                 selected_year_perf = st.selectbox(
                     "2. Choisissez une année",
                     available_years_perf,
-                    key="driver_race_perf_year_select" # Clé renommée
+                    key="driver_race_perf_year_select"
                 )
             
             df_year_filtered_perf = df_session_perf[df_session_perf[YEAR_COLUMN] == selected_year_perf]
@@ -186,7 +184,7 @@ with st.container(border=True):
                         selected_driver_perf = st.selectbox(
                             "3. Choisissez un pilote",
                             available_drivers_perf,
-                            key="driver_race_perf_driver_select" # Clé renommée
+                            key="driver_race_perf_driver_select"
                         )
                     
                     df_driver_filtered_perf = df_year_filtered_perf[df_year_filtered_perf[VIS_DRIVER_COL] == selected_driver_perf]
