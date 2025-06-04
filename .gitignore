@@ -2,3 +2,5 @@
 *.jpg
 .DS_Store
 Labo1
+
+app/__pycache__
