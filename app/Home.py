@@ -3,7 +3,7 @@ import streamlit as st
 st.set_page_config(
     layout="wide",
     page_title="Accueil - Analyse F1",
-    page_icon="🏎️"
+    page_icon="🏎️" 
 )
 
 st.title("🏎️ Bienvenue sur l'Analyseur de Données de Formule 1")

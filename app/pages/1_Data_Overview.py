@@ -96,4 +96,4 @@ else:
     if file_to_load_table:
         st.error(f"Impossible de charger les données pour la session sélectionnée ({selected_session_name_table}). Assurez-vous que le fichier '{file_to_load_table}' est présent dans le dossier 'data' et qu'il est correct.")
     else:
-        st.error("Session sélectionnée non valide ou fichier non spécifié.")
+        st.error("Session sélectionnée non valide ou fichier non spécifié.")  

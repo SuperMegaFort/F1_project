@@ -5,27 +5,36 @@ import os
 
 # --- Global Variables & Constants ---
 SESSION_FILES = {
-    "Course": "data/f1_2015-2024_race.csv",
-    "Qualifications": "data/f1_2015-2024_qualifying.csv",
-    "Essais Libres 1": "data/f1_2015-2024_practice_1.csv",
-    "Essais Libres 2": "data/f1_2015-2024_practice_2.csv",
-    "Essais Libres 3": "data/f1_2015-2024_practice_3.csv",
-    "Meilleur Tour en Course": "data/f1_2015-2024_fastest_lap.csv",
-    "Arrêts aux Stands": "data/f1_2015-2024_pit_stop.csv",
-    "Grille de Départ": "data/f1_2015-2024_starting_grid.csv"
+    #"Course": "data/f1_2015-2024_race.csv",
+    #"Qualifications": "data/f1_2015-2024_qualifying.csv",
+    #"Essais Libres 1": "data/f1_2015-2024_practice_1.csv",
+    #"Essais Libres 2": "data/f1_2015-2024_practice_2.csv",
+    #"Essais Libres 3": "data/f1_2015-2024_practice_3.csv",
+    #"Meilleur Tour en Course": "data/f1_2015-2024_fastest_lap.csv",
+    #"Arrêts aux Stands": "data/f1_2015-2024_pit_stop.csv",
+    #"Grille de Départ": "data/f1_2015-2024_starting_grid.csv"
+    "Course": "data/race_all_years.csv",
+    "Qualifications": "data/qualifying_all_years.csv",
+    "Essais Libres 1": "data/practice_1_all_years.csv",
+    "Essais Libres 2": "data/practice_2_all_years.csv",
+    "Essais Libres 3": "data/practice_3_all_years.csv",
+    "Meilleur Tour en Course": "data/fastest_lap_all_years.csv",
+    "Arrêts aux Stands": "data/pit_stop_all_years.csv",
+    "Grille de Départ": "data/starting_grid_all_years.csv"
 }
 
 YEAR_COLUMN = 'year'
 GP_NAME_COLUMN = 'race_name'
 
 # ========= A CHANGER QUAND LES DATASETS SERONT MIS A JOUR =========
-#VIS_DRIVER_COL = 'driver_name'
-VIS_DRIVER_COL= 'driver_number'
+VIS_DRIVER_COL = 'driver_name'
+#VIS_DRIVER_COL= 'driver_number'
 VIS_POSITION_COL = 'position'
-#POINTS_COL = 'points'
-POINTS_COL = 'time_or_retired'
+POINTS_COL = 'points'
+#POINTS_COL = 'time_or_retired'
 #CONSTRUCTOR_COL = 'constructor_name'
-CONSTRUCTOR_COL = 'driver_name'
+CONSTRUCTOR_COL = 'team'
+#CONSTRUCTOR_COL = 'driver_name'
 
 # --- Data Loading Function ---
 @st.cache_data

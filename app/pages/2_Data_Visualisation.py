@@ -219,3 +219,4 @@ st.markdown("---")
 st.subheader("🧩 Plus de Visualisations (à venir)")
 with st.container(border=True):
     st.markdown("Cette section pourra accueillir d'autres types de graphiques.")
+    
