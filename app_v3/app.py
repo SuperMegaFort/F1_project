@@ -171,16 +171,32 @@ else:
 
             if st.button(f"Prédire le classement pour le {selected_race} 2025"):
                 with st.spinner(f"Calcul de la prédiction..."):
-                    
-                    # ## CORRECTION : On passe bien les 3 arguments attendus ##
                     result = run_prediction(full_data, 2025, selected_race)
                 
-                st.subheader("🏆 Classement Prédit")
+                st.subheader("🏆 Classement Prédit vs. Réalité")
                 if isinstance(result, pd.DataFrame):
-                    st.dataframe(result[['PredictedRank', 'driver_code', 'team', 'grid', 'PredictedPositionValue']])
+                    
+                    # --- CORRECTION APPLIQUÉE ICI ---
+                    # On s'assure que la colonne de la position réelle est numérique avant de calculer l'erreur
+                    if 'ActualPosition' in result.columns:
+                        result['ActualPosition'] = pd.to_numeric(result['ActualPosition'], errors='coerce')
+                    
+                    display_cols = ['PredictedRank', 'driver_code', 'team', 'grid', 'ActualPosition', 'PredictedPositionValue']
+                    cols_to_show = [col for col in display_cols if col in result.columns]
+                    st.dataframe(result[cols_to_show])
+                    
+                    # Le calcul du MAE ne se fera que sur les lignes où la position réelle est un nombre
+                    if 'ActualPosition' in result.columns:
+                        mae_df = result.dropna(subset=['ActualPosition'])
+                        mae = (mae_df['PredictedRank'] - mae_df['ActualPosition']).abs().mean()
+                        st.metric(
+                            label="Erreur Absolue Moyenne (MAE)", 
+                            value=f"{mae:.2f}",
+                            help="La différence moyenne entre le rang prédit et le rang réel (calculée uniquement sur les pilotes classés)."
+                        )
+                    
                     st.success("Prédiction terminée !")
                 else:
                     st.error(result)
         else:
             st.warning("Aucune donnée pour la saison 2025 trouvée dans le fichier principal.")
-
