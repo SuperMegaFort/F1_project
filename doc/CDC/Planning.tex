@@ -1,0 +1,306 @@
+\documentclass[11pt, a4paper]{article}
+
+% --- PACKAGES DE BASE ---
+\usepackage[utf8]{inputenc} % Encodage des caractères source
+\usepackage[T1]{fontenc}    % Encodage de la police de sortie (accents)
+\usepackage[french]{babel}  % Règles typographiques françaises
+
+% --- GÉOMÉTRIE DE LA PAGE ---
+\usepackage{geometry}
+\geometry{left=2.5cm, right=2.5cm, top=2.5cm, bottom=2.5cm} % Marges
+
+% --- AMÉLIORATIONS TYPOGRAPHIQUES ET STRUCTURELLES ---
+\usepackage{graphicx}       % Pour inclure des images (logos, schémas...)
+\usepackage{enumitem}       % Contrôle avancé des listes
+\usepackage{booktabs}       % Pour de plus beaux tableaux (si besoin futur)
+\usepackage{setspace}       % Pour ajuster l'interligne si nécessaire (optionnel)
+%\singlespacing % ou \onehalfspacing ou \doublespacing
+
+% --- LIENS HYPERTEXTE ET MÉTA-DONNÉES PDF ---
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,         % Colorer les liens
+    linkcolor=blue,          % Couleur des liens internes (TOC, refs)
+    citecolor=green,         % Couleur des citations (si biblio)
+    filecolor=magenta,       % Couleur des liens fichiers locaux
+    urlcolor=cyan,           % Couleur des URLs
+    breaklinks=true,         % Permettre aux URLs longues de se couper
+    pdftitle={Cahier des Charges - Projet F1 Data},
+    pdfauthor={Hajda Altin / Telley Cyril},
+    pdfsubject={Spécifications du projet d'analyse de données F1},
+    pdfkeywords={Formule 1, F1, Data Analysis, Machine Learning, Python, Dash, Streamlit, Cahier des Charges},
+    pdfpagemode=UseOutlines, % Afficher les signets au démarrage
+    pdflang=fr-CH            % Spécifier la langue (Suisse francophone)
+}
+
+% --- INFORMATIONS DU DOCUMENT ---
+% Date de début: Vendredi 11 Avril 2025
+% Date de fin: Lundi 16 Juin 2025
+\newcommand{\startDate}{11 Avril 2025}
+\newcommand{\endDate}{16 Juin 2025}
+\newcommand{\currentReportDate}{23 Avril 2025} % Date de rédaction/mise à jour du CDC
+
+\title{
+    \vspace{2cm} % Espace en haut
+    \textbf{Cahier des Charges} \\
+    \vspace{0.5cm}
+    \Large Projet d'Analyse et de Prédiction de Données de Formule 1
+    \vspace{1.5cm} % Espace avant les auteurs
+}
+\author{Hajda Altin \\ Telley Cyril}
+\date{\currentReportDate} % Date de la version actuelle du document
+
+
+% --- DÉBUT DU DOCUMENT ---
+\begin{document}
+
+% --- PAGE DE TITRE ---
+\begin{titlepage}
+    \maketitle
+    \vfill % Pousse le texte suivant vers le bas
+    \begin{center}
+        \textit{Période du projet : \startDate{} - \endDate}
+    \end{center}
+    \thispagestyle{empty} % Pas de numéro de page sur la page de titre
+\end{titlepage}
+
+% --- TABLE DES MATIÈRES ---
+\newpage % Nouvelle page après le titre
+\tableofcontents % Génère la table des matières
+\thispagestyle{empty} % Pas de numéro de page sur la TOC (optionnel)
+\newpage
+
+% --- CONTENU DU CAHIER DES CHARGES ---
+\setcounter{page}{1} % Réinitialiser le compteur de page si souhaité après TOC
+
+\section{But général du projet}
+
+Développer un système complet et automatisé pour la collecte, l'analyse et la prédiction des données issues des courses de Formule 1. Ce système comprendra une interface utilisateur web (basée sur Dash ou Streamlit) pour la visualisation des analyses et des prédictions générées.
+
+\section{Contexte et objectifs}
+
+\begin{description}[style=standard, itemsep=0.5em, labelwidth=!, leftmargin=1.5em, font=\normalfont] % Utilisation de style=standard pour assurer le retour à la ligne
+    \item[Contexte~:] La Formule 1 est un sport générant une quantité massive de données à chaque événement. L'analyse approfondie de ces données historiques peut révéler des tendances, des schémas de performance et fournir des informations précieuses pour comprendre les résultats passés et potentiellement anticiper les performances futures. Ce projet vise à exploiter ces données pour créer des outils d'analyse et de prédiction accessibles dans le cadre d'un projet limité dans le temps.
+
+    \item[Objectifs spécifiques~:] Le projet se décompose en plusieurs objectifs clés~:
+    \begin{enumerate}[label=\arabic*.~, wide, labelwidth=!, labelindent=0pt, leftmargin=*] % Numérotation standard
+        \item Mettre en place un système de web scraping robuste pour extraire les résultats des sessions (Essais Libres, Qualifications, Courses, Qualifications Sprints, Courses Sprints) depuis le site officiel \texttt{formula1.com}.
+        \item Intégrer l'API \texttt{FastF1} (via sa bibliothèque Python) pour acquérir des données télémétriques et contextuelles détaillées complémentaires.
+        \item Concevoir et implémenter une méthode de stockage structurée et pérenne pour les données collectées, initialement sous forme de fichiers CSV locaux.
+        \item Développer un pipeline de nettoyage et de prétraitement des données, incluant la fusion cohérente des informations provenant des différentes sources (\texttt{formula1.com} et \texttt{FastF1}).
+        \item Élaborer et entraîner des modèles de Machine Learning capables de prédire divers aspects des courses futures (ex~: classement final, composition du podium, détenteur du meilleur tour en course).
+        \item Mettre en place un processus opérationnel pour générer et actualiser ces prédictions avant chaque Grand Prix (dans la mesure du possible durant la période du projet).
+        \item Créer une interface utilisateur web interactive (avec Dash ou Streamlit) pour permettre la visualisation des données historiques, des analyses et des prédictions générées par les modèles.
+    \end{enumerate}
+\end{description}
+
+%\clearpage
+
+\section{Présentation des données à utiliser}
+
+\subsection{Sources de données et droit d’utilisation}
+
+Le projet s'appuiera sur les sources de données suivantes~:
+
+\begin{description}[style=standard, itemsep=0.5em, labelwidth=!, leftmargin=1.5em, font=\normalfont]
+    \item[Site Web Officiel (\url{formula1.com})]~:
+        \subitem \textit{Droit d'utilisation~:} Le scraping sera effectué en conformité avec le fichier \texttt{robots.txt} du site et ses conditions générales d'utilisation. Des délais entre les requêtes et un user-agent approprié seront utilisés pour éviter toute surcharge du serveur. L'utilisation des données sera limitée à des fins d'analyse personnelle et non commerciale dans le cadre de ce projet.
+
+    \item[API FastF1 (Bibliothèque Python \texttt{FastF1})]~:
+        \subitem \textit{Droit d'utilisation~:} L'utilisation sera conforme à la licence de la bibliothèque \texttt{FastF1} et aux conditions d'utilisation des données sous-jacentes qu'elle expose (souvent issues de sources publiques ou d'API officielles).
+\end{description}
+
+\subsection{Description des données (attributs, quantité)}
+
+\begin{description}[style=standard, itemsep=0.5em, labelwidth=!, leftmargin=1.5em, font=\normalfont]
+    \item[Périmètre temporel~:] Les données couvriront a minima les 5 dernières saisons complètes de Formule 1, ainsi que la saison en cours, en fonction du temps disponible pour la collecte.
+    \item[Attributs envisagés par session~:] (Liste non exhaustive, à affiner lors de l'exploration)
+        \begin{itemize}[label=\textbullet, itemsep=0.2em, leftmargin=*]
+            \item \textit{Informations générales~:} Année, nom/identifiant du Grand Prix, nom du circuit, date(s), type de session (FP1, FP2, FP3, Q, SQ, R, SR).
+            \item \textit{Résultats (Classement)~:} Position finale, numéro de voiture, nom complet du pilote, nom de l'écurie, temps final ou écart au leader, nombre de tours complétés, statut (ex~: Fini, Abandon, +1 Lap), points marqués.
+            \item \textit{Données de Qualification / Sprint Qualification~:} Temps réalisés dans chaque segment (Q1, Q2, Q3), classement final de la séance.
+            \item \textit{Temps au tour~:} Meilleurs temps au tour par pilote pour chaque session, potentiellement l'historique complet des temps au tour (via \texttt{FastF1}).
+            \item \textit{Arrêts aux stands (Pit Stops)~:} Nombre total d'arrêts, tour de chaque arrêt, durée de l'immobilisation (si disponible).
+            \item \textit{Données \texttt{FastF1} complémentaires~:} Données de télémétrie (vitesse, RPM, rapport engagé, position sur la piste), informations sur les pneus (type de gomme utilisé, usure/tours effectués), temps par secteur, conditions météorologiques (température air/piste, pluie).
+        \end{itemize}
+    \item[Quantité estimée~:] La volumétrie variera significativement. Les résultats de session représenteront quelques centaines de lignes par événement. L'inclusion des données de télémétrie et des temps au tour complets pourrait générer plusieurs milliers, voire dizaines de milliers, de lignes par course. Le stockage total représentera plusieurs centaines de Mo ou quelques Go sous forme de fichiers CSV.
+\end{description}
+
+\subsection{Méthodes d'extraction et de stockage}
+
+\begin{description}[style=standard, itemsep=0.5em, labelwidth=!, leftmargin=1.5em, font=\normalfont]
+    \item[\texttt{formula1.com} (Scraping)]~:
+        \subitem Utilisation de bibliothèques Python standards : \texttt{requests} pour les requêtes HTTP et \texttt{BeautifulSoup4} (ou \texttt{lxml}) pour l'analyse syntaxique du HTML.
+        \subitem Développement d'une logique de navigation automatisée pour parcourir les archives par année, Grand Prix et type de session.
+    \item[\texttt{FastF1} (API Client)]~:
+        \subitem Utilisation directe de la bibliothèque Python \texttt{FastF1} et de ses fonctions pour requêter et récupérer les données structurées (télémétrie, pneus, météo, etc.).
+    \item[Stockage Initial]~:
+        \subitem Sauvegarde des données brutes et traitées dans des fichiers au format CSV (\textit{Comma-Separated Values}).
+        \subitem Organisation dans des dossiers locaux, suivant une convention de nommage claire et une structure de colonnes prédéfinie et documentée. (Ex: \texttt{data/raw/YYYY/YYYY\_XX\_GPName\_SessionType.csv}, \texttt{data/processed/master\_results.csv})
+\end{description}
+
+\section{Architecture globale et technologies envisagées}
+
+\begin{description}[style=standard, itemsep=0.5em, labelwidth=!, leftmargin=1.5em, font=\normalfont]
+    \item[Architecture Modulaire~:] Le système sera conçu autour de modules distincts et faiblement couplés pour faciliter le développement, les tests et la maintenance~:
+        \begin{itemize}[label=\textbullet, itemsep=0.2em, leftmargin=*]
+            \item Module d'Extraction : Scraper \texttt{formula1.com} + Client API \texttt{FastF1}.
+            \item Module de Gestion des Données : Lecture, écriture, validation et fusion des fichiers CSV.
+            \item Module de Traitement : Nettoyage, prétraitement, ingénierie de caractéristiques (feature engineering).
+            \item Module de Modélisation : Entraînement, évaluation et sauvegarde des modèles de Machine Learning.
+            \item Module de Prédiction : Chargement des modèles et génération des prédictions pour les nouvelles courses.
+            \item Module d'Interface Utilisateur : Application Web (Dash/Streamlit) pour la visualisation.
+        \end{itemize}
+    \item[Flux de Données Principal~:]
+        \begin{enumerate}[label=(\alph*), itemsep=0.2em, leftmargin=*]
+            \item Extraction (Scraper/API) $\rightarrow$ Fichiers CSV bruts.
+            \item Lecture CSV bruts $\rightarrow$ Traitement (Nettoyage, Fusion, Feature Engineering) $\rightarrow$ Fichiers CSV traités / Datasets pour ML.
+            \item Lecture Datasets ML $\rightarrow$ Entraînement Modèles $\rightarrow$ Modèles sérialisés (fichiers).
+            \item Chargement Modèles + Données nouvelles courses $\rightarrow$ Script de Prédiction $\rightarrow$ Fichier/Base de Prédictions.
+            \item Lecture Données Traitées + Prédictions $\rightarrow$ Interface Utilisateur.
+        \end{enumerate}
+    \item[Stockage~:] Utilisation du système de fichiers local pour les fichiers de données (CSV) et les modèles de ML sauvegardés (ex: via \texttt{pickle} ou \texttt{joblib}).
+    \item[Technologies Principales~:]
+        \begin{itemize}[label=\textbullet, itemsep=0.2em, leftmargin=*]
+            \item \textit{Langage de programmation~:} Python (version 3.9+ recommandée).
+            \item \textit{Manipulation de données~:} Pandas, NumPy.
+            \item \textit{Web Scraping~:} Requests, BeautifulSoup4 / lxml.
+            \item \textit{API F1~:} FastF1.
+            \item \textit{Machine Learning~:} Scikit-learn (pour les algorithmes de base, pipelines, métriques), potentiellement XGBoost, LightGBM ou CatBoost pour des modèles de gradient boosting plus performants.
+            \item \textit{Interface Utilisateur (Web App)~:} Dash (Plotly) ou Streamlit. Le choix final dépendra de la complexité souhaitée et de la facilité d'intégration.
+            \item \textit{Gestion de l'environnement~:} \texttt{venv} (standard Python) ou \texttt{conda} (Anaconda/Miniconda) pour isoler les dépendances du projet. Fichier \texttt{requirements.txt} ou \texttt{environment.yml}.
+        \end{itemize}
+    \item[Exécution~:] Les différents modules seront implémentés sous forme de scripts Python exécutables depuis la ligne de commande. L'exécution sera initialement manuelle. Une planification simple pourrait être envisagée mais n'est pas un objectif prioritaire vu le délai court.
+\end{description}
+
+\section{Techniques, méthodes et algorithmes envisagés}
+
+\begin{description}[style=standard, itemsep=0.5em, labelwidth=!, leftmargin=1.5em, font=\normalfont]
+    \item[Analyse Exploratoire des Données (EDA)]~:
+        \begin{itemize}[label=\textbullet, itemsep=0.2em, leftmargin=*]
+            \item Analyse statistique descriptive : Moyennes, médianes, écarts-types, quantiles des temps au tour, écarts, nombre d'arrêts, etc.
+            \item Statistiques agrégées par pilote, équipe, circuit, saison pour identifier des tendances.
+            \item Visualisations (via notebooks Jupyter ou directement dans l'UI) : Histogrammes, box plots, scatter plots, time series pour suivre l'évolution des classements, comparer les performances, étudier les corrélations.
+        \end{itemize}
+    \item[Nettoyage et Prétraitement]~:
+        \begin{itemize}[label=\textbullet, itemsep=0.2em, leftmargin=*]
+            \item Traitement des valeurs manquantes (NaN) : Suppression ou imputation simple (moyenne, médiane, mode).
+            \item Standardisation des formats : Conversion des temps (en secondes ou millisecondes), unification des formats de date/heure.
+            \item Encodage des variables catégorielles : Transformation des noms de pilotes, équipes, circuits en représentations numériques (ex: One-Hot Encoding, Label Encoding).
+            \item Normalisation/Standardisation des variables numériques si requis par les algorithmes ML.
+        \end{itemize}
+    \item[Ingénierie de Caractéristiques (Feature Engineering)]~:
+        \begin{itemize}[label=\textbullet, itemsep=0.2em, leftmargin=*]
+            \item Création de variables basées sur l'historique : Performance récente du pilote/équipe, performance historique sur le circuit, résultats des qualifications, etc.
+            \item Intégration des caractéristiques intrinsèques du circuit.
+            \item Agrégation de données fines (si temps et données permettent) : Moyenne/médiane des temps au tour, nombre d'arrêts.
+            \item Variables relatives : Écart de performance par rapport au coéquipier, position sur la grille.
+        \end{itemize}
+    \item[Modélisation (Machine Learning)]~:
+        \begin{itemize}[label=\textbullet, itemsep=0.2em, leftmargin=*]
+            \item \textit{Priorité~: Problèmes de Classification~:}
+                \subitem Prédiction du Podium (Top 3) : Approche binaire (pilote X dans le top 3 ?) ou multi-classe (prédiction directe des 3 premiers). Algorithmes : Régression Logistique, Random Forest Classifier, Gradient Boosting (LightGBM/XGBoost).
+                \subitem Prédiction du Vainqueur : Multi-classe.
+            \item \textit{Si temps permet~: Classement ou Régression~:}
+                 \subitem Prédiction du Classement Complet (approche simplifiée via régression de la position ou classification).
+                 \subitem Prédiction Nombre d'Arrêts (régression).
+        \end{itemize}
+    \item[Évaluation des Modèles]~:
+        \begin{itemize}[label=\textbullet, itemsep=0.2em, leftmargin=*]
+            \item Métriques adaptées :
+                \subitem Classification : Exactitude, Précision, Rappel, F1-Score (pondéré/macro), Log Loss.
+                \subitem Régression : MAE, RMSE.
+            \item Techniques de validation : Validation croisée temporelle (ex: entraînement sur saisons N-2, validation sur saison N-1, test sur saison N) pour simuler des prédictions futures. Mise de côté d'un jeu de test final (ex: dernière saison complète disponible).
+        \end{itemize}
+\end{description}
+
+\section{Résultats attendus}
+
+À l'issue du projet (échéance \endDate), les livrables suivants sont attendus~:
+
+\begin{itemize}[label=\textbullet, itemsep=0.2em, leftmargin=*]
+    \item Un ensemble de scripts Python fonctionnels pour l'extraction (scraping/API), le traitement de base, l'entraînement d'au moins un modèle prédictif (ex: podium) et la génération de prédictions.
+    \item Une collection organisée de fichiers CSV contenant les données F1 structurées pour les saisons ciblées.
+    \item Au moins un modèle de Machine Learning entraîné et sauvegardé pour la tâche de prédiction principale.
+    \item Des fichiers de sortie (ou affichage UI) contenant les prédictions pour les courses à venir (ou un exemple basé sur des données historiques).
+    \item Une application web locale (\texttt{Dash}/\texttt{Streamlit}) fonctionnelle permettant à minima~:
+        \begin{itemize}[label=\textendash, itemsep=0.2em, leftmargin=*]
+            \item La consultation simple des données historiques (ex: résultats par GP/saison).
+            \item L'affichage des prédictions générées.
+        \end{itemize}
+    \item Une documentation technique concise (README) décrivant l'architecture simplifiée, l'installation et l'utilisation des scripts/UI.
+\end{itemize}
+
+\section{Risques, points critiques et problèmes potentiels}
+
+\begin{description}[style=standard, itemsep=0.5em, labelwidth=!, leftmargin=1.5em, font=\normalfont]
+    \item[Risques Identifiés (principaux pour un projet court)]~:
+        \begin{itemize}[label=\textbullet, itemsep=0.2em, leftmargin=*]
+            \item \textit{Maintenance/Blocage du Scraper~:} Changements sur \texttt{formula1.com} ou mesures anti-scraping pouvant fortement ralentir/bloquer la collecte.
+            \item \textit{Qualité/Disponibilité des Données~:} Incohérences ou délais dans la disponibilité des données pouvant impacter le prétraitement et la pertinence des prédictions.
+            \item \textit{Complexité Imprévue~:} Sous-estimation du temps nécessaire pour le nettoyage des données, le feature engineering ou le développement de l'UI.
+            \item \textit{Précision Limitée~:} Attentes réalistes concernant la précision des modèles vu la complexité de la F1 et le temps limité pour l'optimisation.
+            \item \textit{Gestion du Temps~:} Le délai court (env. 9 semaines) est le risque principal, nécessitant une priorisation stricte des fonctionnalités.
+        \end{itemize}
+    \item[Points Critiques pour le Succès~:]
+        \begin{itemize}[label=\textbullet, itemsep=0.2em, leftmargin=*]
+            \item Obtenir rapidement un scraper fonctionnel et stable pour les données essentielles (résultats).
+            \item Mettre en place rapidement un pipeline de données minimal (Collecte -> Nettoyage -> Stockage).
+            \item Se concentrer sur un ou deux objectifs de prédiction clairs (ex: podium).
+            \item Choisir des technologies maîtrisées pour l'UI (Dash/Streamlit) pour un développement rapide.
+        \end{itemize}
+    \item[Problèmes Rencontrés à ce Stade (\currentReportDate)]~:
+        \begin{itemize}[label=\textbullet, itemsep=0.2em, leftmargin=*]
+            \item (Section à remplir si des difficultés spécifiques ont déjà été identifiées lors des deux premières semaines, sinon indiquer "Exploration initiale des sources et des outils en cours.")
+        \end{itemize}
+\end{description}
+
+\section{Planification prévisionnelle des étapes du projet}
+
+Le projet a débuté le \startDate{} et se terminera le \endDate{}. Le planning prévisionnel suivant, réparti sur environ 9 semaines, est proposé~:
+
+\begin{enumerate}[label=Phase \arabic*:, wide, labelwidth=!, labelindent=0pt, leftmargin=*, itemsep=0.5em, font=\normalfont] % Utilisation de font=\normalfont pour enlever le gras
+    \item \textit{Initialisation \& Exploration (env. 1.5 semaines : \startDate{} - 25 Avril 2025)}
+        \begin{itemize}[label=\textendash, itemsep=0.2em, leftmargin=*]
+            \item Analyse détaillée des sources (\texttt{formula1.com}, \texttt{FastF1}).
+            \item Définition structure CSV cible.
+            \item Développement prototype scraper (core fonctionnalités).
+            \item Finalisation Cahier des Charges (ce document).
+            \item Configuration environnement de développement.
+        \end{itemize}
+
+    \item \textit{Développement Core Data (env. 2.5 semaines : 28 Avril - 16 Mai 2025)}
+        \begin{itemize}[label=\textendash, itemsep=0.2em, leftmargin=*]
+            \item Développement scraper complet et intégration API \texttt{FastF1}.
+            \item Implémentation scripts gestion CSV (lecture/écriture/fusion).
+            \item Collecte données historiques (focus sur les 5 dernières saisons).
+            \item Implémentation nettoyage et prétraitement de base.
+        \end{itemize}
+
+    \item \textit{Modélisation \& Prédiction (env. 2.5 semaines : 19 Mai - 30 Mai 2025)}
+        \begin{itemize}[label=\textendash, itemsep=0.2em, leftmargin=*]
+            \item Feature engineering (variables clés).
+            \item Entraînement/évaluation modèles prioritaires (ex: podium).
+            \item Sélection et sauvegarde du (des) meilleur(s) modèle(s).
+            \item Développement script de génération de prédictions.
+        \end{itemize}
+
+    \item \textit{Développement Interface Utilisateur (env. 1.5 semaines : 2 Juin - 13 Juin 2025)}
+        \begin{itemize}[label=\textendash, itemsep=0.2em, leftmargin=*]
+            \item Choix final Dash/Streamlit et mise en place structure App.
+            \item Développement composants UI (visualisation données, affichage prédictions).
+            \item Intégration avec modules données/prédictions.
+        \end{itemize}
+
+    \item \textit{Tests, Raffinement \& Finalisation (env. 0.5 semaine : 13 Juin - \endDate)}
+        \begin{itemize}[label=\textendash, itemsep=0.2em, leftmargin=*]
+            \item Tests d'intégration finaux.
+            \item Corrections de bugs mineurs.
+            \item Finalisation documentation (README).
+            \item Validation finale et préparation démonstration.
+            \item Livraison finale du projet.
+        \end{itemize}
+\end{enumerate}
+
+\end{document}
+% --- FIN DU DOCUMENT ---
