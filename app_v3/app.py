@@ -5,6 +5,7 @@ import numpy as np
 import altair as alt
 from config import ALL_DATA_PATH
 from prediction_logic import run_prediction
+import plotly.express as px
 
 # --- Configuration de la Page et du Style ---
 st.set_page_config(page_title="F1 Vision", layout="wide", initial_sidebar_state="expanded")
@@ -23,7 +24,7 @@ st.markdown("""
     
     /* Barre latérale */
     [data-testid="stSidebar"] {
-        background-color: #0A0A0A;
+        background-color: #B00000;
     }
     
     /* Boutons et éléments interactifs */
@@ -112,8 +113,26 @@ else:
             driver_standings = driver_standings.sort_values(by='points', ascending=False).reset_index(drop=True)
             driver_standings['Position'] = driver_standings.index + 1
             st.dataframe(driver_standings[['Position', 'driver_code', 'team', 'points']], use_container_width=True)
+            
+            # Create the bar chart using Streamlit's built-in chart
+            chart_data = driver_standings.sort_values(by='points', ascending=False).set_index('driver_code')['points'].reset_index()
+            fig = px.bar(
+                chart_data, 
+                x='driver_code', 
+                y='points',
+                title=f'Points des Pilotes - {selected_year}',
+                labels={'driver_code': 'Pilote', 'points': 'Points'},
+                color='points',
+                color_continuous_scale='viridis'
+            )
+            fig.update_layout(xaxis_tickangle=-45)
+            st.plotly_chart(fig, use_container_width=True)
+            
         else:
             st.warning(f"Aucune donnée disponible pour l'année {selected_year}.")
+        
+            
+        
 
     # --- Onglet 2 : Classement des Constructeurs ---
     with tab_constructors:
@@ -123,6 +142,20 @@ else:
             constructor_standings = constructor_standings.sort_values(by='points', ascending=False).reset_index(drop=True)
             constructor_standings['Position'] = constructor_standings.index + 1
             st.dataframe(constructor_standings[['Position', 'team', 'points']], use_container_width=True)
+            
+            chart_data = constructor_standings.sort_values(by='points', ascending=False).set_index('team')['points'].reset_index()
+            fig = px.bar(
+                chart_data, 
+                x='team', 
+                y='points',
+                title=f'Points des Écuries - {selected_year}',
+                labels={'team': 'Écurie', 'points': 'Points'},
+                color='points',
+                color_continuous_scale='viridis'
+            )
+            fig.update_layout(xaxis_tickangle=-45)
+            st.plotly_chart(fig, use_container_width=True)
+            
         else:
             st.warning(f"Aucune donnée disponible pour l'année {selected_year}.")
 
@@ -130,6 +163,7 @@ else:
     with tab_progress:
         st.header(f"📈 Progression du Championnat - {selected_year}")
         
+        st.subheader("🏁 Points cumulés")
         # Choix entre Pilotes et Écuries
         progress_type = st.radio("Afficher la progression pour :", ["Pilotes", "Écuries"], horizontal=True)
         
@@ -144,7 +178,7 @@ else:
                 data_to_plot = team_points_sorted.copy()
                 data_to_plot['CumulativePoints'] = data_to_plot.groupby('team')['points'].cumsum()
                 color_column, title_column = 'team', 'Équipe'
-
+            
             chart = (
                 alt.Chart(data_to_plot)
                 .mark_line(point=True)
@@ -159,6 +193,81 @@ else:
         else:
             st.warning(f"Aucune donnée disponible pour l'année {selected_year}.")
 
+        st.subheader("3️⃣ Nombre de podiums")
+        progress_type = st.radio("Afficher le nombre de podiums pour :", ["Pilotes", "Écuries"], horizontal=True)
+        
+        if not season_data.empty:
+            data_to_plot = season_data.copy()
+            data_to_plot['position'] = data_to_plot['position'].replace(['NC', 'DQ'], 1000)
+            data_to_plot['position'] = data_to_plot['position'].astype(int)
+            data_to_plot['is_podium'] = data_to_plot['position'] <= 3
+            
+            if progress_type == "Pilotes":
+                data_to_plot = data_to_plot[['driver_code', 'is_podium']].groupby('driver_code').sum().reset_index()
+                color_column, title_column = 'driver_code', 'Pilote'
+            else:
+                data_to_plot = data_to_plot[['team', 'is_podium']].groupby('team').sum().reset_index()
+                color_column, title_column = 'team', 'Équipe'
+
+            chart = (
+                alt.Chart(data_to_plot)
+                .mark_bar()
+                .encode(
+                    x=alt.X(color_column+':N', title=title_column, axis=alt.Axis(labelAngle=-45), 
+                    sort=alt.SortField(field=color_column, order='ascending')),
+                    y=alt.Y('is_podium:Q', title='Nombre de podiums'),
+                    color=alt.Color(color_column+':N', title=title_column),
+                )
+                .properties(width=400, height=400, title=f'Nombre de podiums - {selected_year}')
+            )
+            st.altair_chart(chart, use_container_width=True)
+        else:
+            st.warning(f"Aucune donnée disponible pour l'année {selected_year}.")
+        
+        st.subheader("📊 Résumé des classements")
+        # violin plot of the distribution of the positions
+        progress_type = st.radio("Afficher la distribution des positions pour :", ["Pilotes", "Écuries"], horizontal=True)
+        if not season_data.empty:
+            data_to_plot = season_data.copy()
+            # drop columns if position is NQ or DQ
+            data_to_plot = data_to_plot[data_to_plot['position'] != 'NC']
+            data_to_plot = data_to_plot[data_to_plot['position'] != 'DQ']
+            # drop columns if position is not a number
+            data_to_plot['position'] = pd.to_numeric(data_to_plot['position'], errors='coerce')
+            data_to_plot = data_to_plot.dropna(subset=['position'])
+
+            if progress_type == "Pilotes":
+                color_column, title_column = 'driver_code', 'Pilote'
+            else:
+                color_column, title_column = 'team', 'Équipe'
+
+                    # Get the actual range of positions in your data
+            min_pos = int(data_to_plot['position'].min())
+            max_pos = int(data_to_plot['position'].max())
+            
+            fig = px.box(
+                data_to_plot, 
+                x=color_column, 
+                y='position',
+                title=f'Distribution des positions - {selected_year}',
+                labels={color_column: title_column, 'position': 'Position'},
+                color=color_column
+            )
+            
+            # Customize the plot
+            fig.update_layout(
+                yaxis=dict(autorange='reversed'),  # Reverse Y-axis so position 1 is at top
+                xaxis_tickangle=-45,
+                height=500,
+                showlegend=False
+            )
+                    
+            # Display the plot
+            st.plotly_chart(fig, use_container_width=True)
+        else:
+            st.warning(f"Aucune donnée disponible pour l'année {selected_year}.")
+        
+        
     # --- Onglet 4 : Prédictions ---
     with tab_predictions:
         st.header("🎯 Simuler une Prédiction")
@@ -181,7 +290,7 @@ else:
                     if 'ActualPosition' in result.columns:
                         result['ActualPosition'] = pd.to_numeric(result['ActualPosition'], errors='coerce')
                     
-                    display_cols = ['PredictedRank', 'driver_code', 'team', 'grid', 'ActualPosition', 'PredictedPositionValue']
+                    display_cols = ['driver_code', 'team', 'grid', 'ActualPosition', 'PredictedRank', 'PredictedPositionValue']
                     cols_to_show = [col for col in display_cols if col in result.columns]
                     st.dataframe(result[cols_to_show])
                     
@@ -198,5 +307,103 @@ else:
                     st.success("Prédiction terminée !")
                 else:
                     st.error(result)
+                
+                col1, col2 = st.columns(2, gap='medium')
+                with col1:
+                    # actual rank vs predicted rank charts
+                    st.subheader("📊 Comparaison Positions Réelles vs Positions Relatives Prédites")
+                    chart_data = result[['driver_code', 'team', 'ActualPosition', 'PredictedRank']].copy()
+                    chart_data = chart_data.dropna(subset=['ActualPosition', 'PredictedRank'])
+                    
+                    if not chart_data.empty:
+                        # Créer le graphique côte à côte
+                        chart = (
+                                alt.Chart(chart_data)
+                                .mark_bar(opacity=0.7)
+                                .encode(
+                                    x=alt.X('driver_code:N', title='Pilote', axis=alt.Axis(labelAngle=-45), 
+                                    sort=alt.SortField(field='ActualPosition', order='ascending')),
+                                    y=alt.Y('value:Q', title='Position', scale=alt.Scale(reverse=True)),
+                                    color=alt.Color('variable:N',
+                                                title='Type de Position',
+                                                scale=alt.Scale(domain=['ActualPosition', 'PredictedRank'],
+                                                                range=['#00FA9A', '#1f77b4'])),
+                                    xOffset=alt.XOffset('variable:N'),  # This creates the grouped bars
+                                    tooltip=['driver_code', 'team', 'ActualPosition', 'PredictedRank']
+                                )
+                                .transform_fold(
+                                    ['ActualPosition', 'PredictedRank'],
+                                    as_=['variable', 'value']
+                                )
+                                .properties(
+                                    width=400,  # Adjust overall width
+                                    height=400,
+                                    title=f'{selected_race} 2025'
+                                )
+                                .resolve_scale(
+                                    color='independent'
+                                )
+                            )
+
+                        st.altair_chart(chart, use_container_width=True)
+                        
+                        # Légende explicative
+                        st.markdown("""
+                        **Légende :**
+                        - 🟢 **Vert** : Position réelle
+                        - 🔵 **Bleu** : Position prédite
+                        - Plus la barre est haute, meilleure est la position (1 = 1er, 20 = 20ème)
+                        """)
+                    else:
+                        st.warning("Aucune donnée de position réelle disponible pour créer le graphique.")
+            
+                with col2:
+                                        # actual rank vs predicted rank charts
+                    st.subheader("📊 Comparaison Positions Prédites vs Valeurs Prédites")
+                    chart_data = result[['driver_code', 'team', 'PredictedRank', 'PredictedPositionValue', 'ActualPosition']].copy()
+                    chart_data = chart_data.dropna(subset=['ActualPosition', 'PredictedRank']).drop(columns=['ActualPosition'])
+                    
+                    if not chart_data.empty:
+                        # Créer le graphique côte à côte
+                        chart = (
+                                alt.Chart(chart_data)
+                                .mark_bar(opacity=0.7)
+                                .encode(
+                                    x=alt.X('driver_code:N', title='Pilote', axis=alt.Axis(labelAngle=-45), 
+                                    sort=alt.SortField(field='PredictedRank', order='ascending')),
+                                    y=alt.Y('value:Q', title='Position', scale=alt.Scale(reverse=True)),
+                                    color=alt.Color('variable:N',
+                                                title='Type de Position',
+                                                scale=alt.Scale(domain=['PredictedRank', 'PredictedPositionValue'],
+                                                                range=['#1f77b4', '#e10600'])),
+                                    xOffset=alt.XOffset('variable:N'),  # This creates the grouped bars
+                                    tooltip=['driver_code', 'team', 'PredictedRank', 'PredictedPositionValue']
+                                )
+                                .transform_fold(
+                                    ['PredictedRank', 'PredictedPositionValue'],
+                                    as_=['variable', 'value']
+                                )
+                                .properties(
+                                    width=400,  # Adjust overall width
+                                    height=400,
+                                    title=f'{selected_race} 2025'
+                                )
+                                .resolve_scale(
+                                    color='independent'
+                                )
+                            )
+
+                        st.altair_chart(chart, use_container_width=True)
+                        
+                        # Légende explicative
+                        st.markdown("""
+                        **Légende :**
+                        - 🔴 **Rouge** : Position réelle
+                        - 🔵 **Bleu** : Valeur prédite
+                        - Plus la barre est haute, meilleure est la position (1 = 1er, 20 = 20ème)
+                        """)
+                    else:
+                        st.warning("Aucune donnée de position réelle disponible pour créer le graphique.")
+                
         else:
             st.warning("Aucune donnée pour la saison 2025 trouvée dans le fichier principal.")
