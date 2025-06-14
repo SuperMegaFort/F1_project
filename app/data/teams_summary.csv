@@ -1,0 +1,139 @@
+Year,TeamName,TeamPoints,DriverName,Abbreviation,DriverPoints
+2020,Alfa Romeo Racing,8.0,Antonio Giovinazzi,GIO,4.0
+2020,Alfa Romeo Racing,8.0,Kimi Räikkönen,RAI,4.0
+2020,AlphaTauri,107.0,Daniil Kvyat,KVY,32.0
+2020,AlphaTauri,107.0,Pierre Gasly,GAS,75.0
+2020,Ferrari,131.0,Charles Leclerc,LEC,98.0
+2020,Ferrari,131.0,Sebastian Vettel,VET,33.0
+2020,Haas F1 Team,3.0,Kevin Magnussen,MAG,1.0
+2020,Haas F1 Team,3.0,Pietro Fittipaldi,FIT,0.0
+2020,Haas F1 Team,3.0,Romain Grosjean,GRO,2.0
+2020,McLaren,202.0,Carlos Sainz,SAI,105.0
+2020,McLaren,202.0,Lando Norris,NOR,97.0
+2020,Mercedes,573.0,George Russell,RUS,3.0
+2020,Mercedes,573.0,Lewis Hamilton,HAM,347.0
+2020,Mercedes,573.0,Valtteri Bottas,BOT,223.0
+2020,Racing Point,210.0,Lance Stroll,STR,75.0
+2020,Racing Point,210.0,Nico Hulkenberg,HUL,10.0
+2020,Racing Point,210.0,Sergio Perez,PER,125.0
+2020,Red Bull Racing,319.0,Alexander Albon,ALB,105.0
+2020,Red Bull Racing,319.0,Max Verstappen,VER,214.0
+2020,Renault,181.0,Daniel Ricciardo,RIC,119.0
+2020,Renault,181.0,Esteban Ocon,OCO,62.0
+2020,Williams,0.0,George Russell,RUS,0.0
+2020,Williams,0.0,Jack Aitken,AIT,0.0
+2020,Williams,0.0,Nicholas Latifi,LAT,0.0
+2021,Alfa Romeo Racing,13.0,Antonio Giovinazzi,GIO,3.0
+2021,Alfa Romeo Racing,13.0,Kimi Räikkönen,RAI,10.0
+2021,Alfa Romeo Racing,13.0,Robert Kubica,KUB,0.0
+2021,AlphaTauri,142.0,Pierre Gasly,GAS,110.0
+2021,AlphaTauri,142.0,Yuki Tsunoda,TSU,32.0
+2021,Alpine,155.0,Esteban Ocon,OCO,74.0
+2021,Alpine,155.0,Fernando Alonso,ALO,81.0
+2021,Aston Martin,77.0,Lance Stroll,STR,34.0
+2021,Aston Martin,77.0,Sebastian Vettel,VET,43.0
+2021,Ferrari,322.5,Carlos Sainz,SAI,163.5
+2021,Ferrari,322.5,Charles Leclerc,LEC,159.0
+2021,Haas F1 Team,0.0,Mick Schumacher,MSC,0.0
+2021,Haas F1 Team,0.0,Nikita Mazepin,MAZ,0.0
+2021,McLaren,274.0,Daniel Ricciardo,RIC,114.0
+2021,McLaren,274.0,Lando Norris,NOR,160.0
+2021,Mercedes,604.5,Lewis Hamilton,HAM,385.5
+2021,Mercedes,604.5,Valtteri Bottas,BOT,219.0
+2021,Red Bull Racing,578.5,Max Verstappen,VER,388.5
+2021,Red Bull Racing,578.5,Sergio Perez,PER,190.0
+2021,Williams,23.0,George Russell,RUS,16.0
+2021,Williams,23.0,Nicholas Latifi,LAT,7.0
+2022,Alfa Romeo,53.0,Guanyu Zhou,ZHO,6.0
+2022,Alfa Romeo,53.0,Valtteri Bottas,BOT,47.0
+2022,AlphaTauri,35.0,Pierre Gasly,GAS,23.0
+2022,AlphaTauri,35.0,Yuki Tsunoda,TSU,12.0
+2022,Alpine,170.0,Esteban Ocon,OCO,89.0
+2022,Alpine,170.0,Fernando Alonso,ALO,81.0
+2022,Aston Martin,55.0,Lance Stroll,STR,18.0
+2022,Aston Martin,55.0,Nico Hulkenberg,HUL,0.0
+2022,Aston Martin,55.0,Sebastian Vettel,VET,37.0
+2022,Ferrari,519.0,Carlos Sainz,SAI,228.0
+2022,Ferrari,519.0,Charles Leclerc,LEC,291.0
+2022,Haas F1 Team,33.0,Kevin Magnussen,MAG,21.0
+2022,Haas F1 Team,33.0,Mick Schumacher,MSC,12.0
+2022,McLaren,150.0,Daniel Ricciardo,RIC,34.0
+2022,McLaren,150.0,Lando Norris,NOR,116.0
+2022,Mercedes,495.0,George Russell,RUS,262.0
+2022,Mercedes,495.0,Lewis Hamilton,HAM,233.0
+2022,Red Bull Racing,724.0,Max Verstappen,VER,433.0
+2022,Red Bull Racing,724.0,Sergio Perez,PER,291.0
+2022,Williams,8.0,Alexander Albon,ALB,4.0
+2022,Williams,8.0,Nicholas Latifi,LAT,2.0
+2022,Williams,8.0,Nyck De Vries,DEV,2.0
+2023,Alfa Romeo,16.0,Guanyu Zhou,ZHO,6.0
+2023,Alfa Romeo,16.0,Valtteri Bottas,BOT,10.0
+2023,AlphaTauri,22.0,Daniel Ricciardo,RIC,6.0
+2023,AlphaTauri,22.0,Liam Lawson,LAW,2.0
+2023,AlphaTauri,22.0,Nyck De Vries,DEV,0.0
+2023,AlphaTauri,22.0,Yuki Tsunoda,TSU,14.0
+2023,Alpine,110.0,Esteban Ocon,OCO,56.0
+2023,Alpine,110.0,Pierre Gasly,GAS,54.0
+2023,Aston Martin,266.0,Fernando Alonso,ALO,198.0
+2023,Aston Martin,266.0,Lance Stroll,STR,68.0
+2023,Ferrari,363.0,Carlos Sainz,SAI,178.0
+2023,Ferrari,363.0,Charles Leclerc,LEC,185.0
+2023,Haas F1 Team,9.0,Kevin Magnussen,MAG,3.0
+2023,Haas F1 Team,9.0,Nico Hulkenberg,HUL,6.0
+2023,McLaren,266.0,Lando Norris,NOR,184.0
+2023,McLaren,266.0,Oscar Piastri,PIA,82.0
+2023,Mercedes,374.0,George Russell,RUS,157.0
+2023,Mercedes,374.0,Lewis Hamilton,HAM,217.0
+2023,Red Bull Racing,790.0,Max Verstappen,VER,530.0
+2023,Red Bull Racing,790.0,Sergio Perez,PER,260.0
+2023,Williams,26.0,Alexander Albon,ALB,25.0
+2023,Williams,26.0,Logan Sargeant,SAR,1.0
+2024,Alpine,63.0,Esteban Ocon,OCO,23.0
+2024,Alpine,63.0,Jack Doohan,DOO,0.0
+2024,Alpine,63.0,Pierre Gasly,GAS,40.0
+2024,Aston Martin,94.0,Fernando Alonso,ALO,70.0
+2024,Aston Martin,94.0,Lance Stroll,STR,24.0
+2024,Ferrari,595.0,Carlos Sainz,SAI,262.0
+2024,Ferrari,595.0,Charles Leclerc,LEC,327.0
+2024,Ferrari,595.0,Oliver Bearman,BEA,6.0
+2024,Haas F1 Team,51.0,Kevin Magnussen,MAG,14.0
+2024,Haas F1 Team,51.0,Nico Hulkenberg,HUL,36.0
+2024,Haas F1 Team,51.0,Oliver Bearman,BEA,1.0
+2024,Kick Sauber,4.0,Guanyu Zhou,ZHO,4.0
+2024,Kick Sauber,4.0,Valtteri Bottas,BOT,0.0
+2024,McLaren,609.0,Lando Norris,NOR,344.0
+2024,McLaren,609.0,Oscar Piastri,PIA,265.0
+2024,Mercedes,433.0,George Russell,RUS,226.0
+2024,Mercedes,433.0,Lewis Hamilton,HAM,207.0
+2024,RB,40.0,Daniel Ricciardo,RIC,7.0
+2024,RB,40.0,Liam Lawson,LAW,4.0
+2024,RB,40.0,Yuki Tsunoda,TSU,29.0
+2024,Red Bull Racing,537.0,Max Verstappen,VER,399.0
+2024,Red Bull Racing,537.0,Sergio Perez,PER,138.0
+2024,Williams,17.0,Alexander Albon,ALB,12.0
+2024,Williams,17.0,Franco Colapinto,COL,5.0
+2024,Williams,17.0,Logan Sargeant,SAR,0.0
+2025,Alpine,10.0,Franco Colapinto,COL,0.0
+2025,Alpine,10.0,Jack Doohan,DOO,0.0
+2025,Alpine,10.0,Pierre Gasly,GAS,10.0
+2025,Aston Martin,12.0,Fernando Alonso,ALO,2.0
+2025,Aston Martin,12.0,Lance Stroll,STR,10.0
+2025,Ferrari,147.0,Charles Leclerc,LEC,90.0
+2025,Ferrari,147.0,Lewis Hamilton,HAM,57.0
+2025,Haas F1 Team,26.0,Esteban Ocon,OCO,20.0
+2025,Haas F1 Team,26.0,Oliver Bearman,BEA,6.0
+2025,Kick Sauber,16.0,Gabriel Bortoleto,BOR,0.0
+2025,Kick Sauber,16.0,Nico Hulkenberg,HUL,16.0
+2025,McLaren,339.0,Lando Norris,NOR,167.0
+2025,McLaren,339.0,Oscar Piastri,PIA,172.0
+2025,Mercedes,145.0,Andrea Kimi Antonelli,ANT,12.0
+2025,Mercedes,145.0,George Russell,RUS,101.0
+2025,Mercedes,145.0,Kimi Antonelli,ANT,32.0
+2025,Racing Bulls,25.0,Isack Hadjar,HAD,21.0
+2025,Racing Bulls,25.0,Liam Lawson,LAW,4.0
+2025,Racing Bulls,25.0,Yuki Tsunoda,TSU,0.0
+2025,Red Bull Racing,135.0,Liam Lawson,LAW,0.0
+2025,Red Bull Racing,135.0,Max Verstappen,VER,131.0
+2025,Red Bull Racing,135.0,Yuki Tsunoda,TSU,4.0
+2025,Williams,54.0,Alexander Albon,ALB,42.0
+2025,Williams,54.0,Carlos Sainz,SAI,12.0

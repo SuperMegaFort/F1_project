@@ -1,0 +1,23 @@
+circuitId,circuitName,locality,country,corners,imageUrl,circuitLengthKm,bestLapTimeStr,bestLapDriver,sourceYear
+bahrain,BAHRAIN  2024,Sakhir,Bahrain,15,https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Bahrain_Circuit.png,5.412,01:32.608,VER,2024
+jeddah,SAUDI ARABIAN  2024,Jeddah,Saudi Arabia,27,https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Saudi_Arabia_Circuit.png,6.174,01:31.632,LEC,2024
+albert_park,ROLEX AUSTRALIAN  2024,Melbourne,Australia,14,https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Australia_Circuit.png,5.278,01:19.813,LEC,2024
+suzuka,MSC CRUISES JAPANESE  2024,Suzuka,Japan,18,https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Japan_Circuit.png,5.807,01:33.706,VER,2024
+miami,CRYPTO.COM MIAMI  2024,Miami,United States,19,https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Miami_Circuit.png,5.412,01:30.634,PIA,2024
+imola,MSC CRUISES GRAN PREMIO DEL MADE IN ITALY E DELL'EMILIA-ROMAGNA 2024,Imola,Italy,19,https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Emilia_Romagna_Circuit.png,4.909,01:18.589,RUS,2024
+monaco,DE MONACO 2024,Monaco,Monaco,19,"https://media.formula1.com/image/upload/f_auto,c_limit,q_auto,w_1320/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Monaco_Circuit",3.337,01:14.165,HAM,2024
+villeneuve,AWS  DU CANADA 2024,Montréal,Canada,14,https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Canada_Circuit.png,4.361,01:14.856,HAM,2024
+red_bull_ring,QATAR AIRWAYS AUSTRIAN  2024,Spielberg,Austria,10,https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Austria_Circuit.png,4.318,01:07.694,ALO,2024
+silverstone,QATAR AIRWAYS BRITISH  2024,Silverstone,United Kingdom,18,https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Great_Britain_Circuit.png,5.891,01:28.293,SAI,2024
+hungaroring,HUNGARIAN  2024,Budapest,Hungary,14,https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Hungary_Circuit.png,4.381,01:20.305,RUS,2024
+spa,ROLEX BELGIAN  2024,Spa-Francorchamps,Belgium,19,https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Belgium_Circuit.png,7.004,01:44.701,PER,2024
+zandvoort,HEINEKEN DUTCH  2024,Zandvoort,Netherlands,14,https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Netherlands_Circuit.png,4.259,01:13.817,NOR,2024
+monza,PIRELLI GRAN PREMIO D’ITALIA 2024,Monza,Italy,11,https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Italy_Circuit.png,5.793,01:21.432,NOR,2024
+baku,QATAR AIRWAYS AZERBAIJAN  2024,Baku,Azerbaijan,20,https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Baku_Circuit.png,6.003,01:45.255,NOR,2024
+americas,PIRELLI UNITED STATES  2024,Austin,United States,20,https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/USA_Circuit.png,5.513,01:37.330,OCO,2024
+rodriguez,GRAN PREMIO DE LA CIUDAD DE MÉXICO 2024,Mexico City,Mexico,17,https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Mexico_Circuit.png,4.304,01:18.336,LEC,2024
+interlagos,LENOVO GRANDE PRÊMIO DE SÃO PAULO 2024,São Paulo,Brazil,15,https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Brazil_Circuit.png,4.309,01:20.472,VER,2024
+vegas,HEINEKEN SILVER LAS VEGAS  2024,Las Vegas,United States,17,https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Las_Vegas_Circuit.png,6.201,01:34.876,NOR,2024
+losail,QATAR AIRWAYS QATAR  2024,Lusail,Qatar,16,https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Qatar_Circuit.png,5.419,01:22.384,NOR,2024
+yas_marina,ETIHAD AIRWAYS ABU DHABI  2024,Yas Island,United Arab Emirates,16,https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/Abu_Dhabi_Circuit.png,5.281,01:25.637,MAG,2024
+ricard,LENOVO  DE FRANCE 2022,Le Castellet,France,15,https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Circuit%20maps%2016x9/France_Circuit.png,5.842,01:35.781,SAI,2022
