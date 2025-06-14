@@ -1,31 +1,32 @@
 # config.py
+import os
 from pathlib import Path
 
 # --- Configuration des Chemins ---
+
+# Répertoire de base du projet (le dossier app_v3)
 BASE_DIR = Path(__file__).resolve().parent
 
-# Chemin vers les données historiques pour l'entraînement (un seul fichier)
-HISTORICAL_DATA_PATH = BASE_DIR / "data_historical" / "F1_ALL_DATA_2020_2024.csv"
+# --- Chemins des Données ---
 
-# Chemin vers les nouvelles données pour la prédiction (un seul fichier)
-NEW_DATA_PATH = BASE_DIR / "data_new" / "F1_ALL_DATA_2025.csv"
+# Dossier pour les données brutes et générées
+DATA_DIR = BASE_DIR / "data_historical"
+DATA_DIR.mkdir(exist_ok=True) # Crée le dossier s'il n'existe pas
+
+# Données historiques d'entrée pour l'entraînement et l'application
+HISTORICAL_DATA_PATH = DATA_DIR / "F1_ALL_DATA_2020_2024.csv"
+
+# Données générées par les scripts de traitement
+FEATURES_DATA_PATH = DATA_DIR / "F1_FEATURES_ENCODED.csv"
+TEAMS_DATA_PATH = DATA_DIR / "teams_summary_data.csv"
+
+
+# --- Chemins du Modèle ---
 
 # Dossier pour les modèles entraînés et les métadonnées
-MODELS_DIR = BASE_DIR / "models"
-MODELS_DIR.mkdir(exist_ok=True) # Crée le dossier s'il n'existe pas$
+MODEL_DIR = BASE_DIR / "model"
+MODEL_DIR.mkdir(exist_ok=True)
 
-ALL_DATA_PATH = BASE_DIR / "data_all" / "F1_ALL_DATA_2020_2025.csv"
-
-# Modèle et métadonnées
-MODEL_PATH = MODELS_DIR / "ranking_regressor.joblib"
-FEATURE_COLUMNS_PATH = MODELS_DIR / "feature_columns.json"
-
-# config.py
-from pathlib import Path
-
-# --- Configuration des Chemins ---
-BASE_DIR = Path(__file__).resolve().parent
-
-# Chemin vers votre grand fichier de données contenant TOUT (2020-2025)
-# Assurez-vous que ce fichier se trouve bien dans un dossier 'data_all'
-
+# Fichiers du modèle
+MODEL_PATH = MODEL_DIR / "f1_lgbm_model.joblib"
+FEATURE_COLUMNS_PATH = MODEL_DIR / "feature_columns.json"
