@@ -55,3 +55,11 @@ def load_data(file_path):
 def convert_df_to_csv(df):
     """Converts a DataFrame to CSV data."""
     return df.to_csv(index=False).encode('utf-8')
+
+# Chemins vers les fichiers de données
+HISTORICAL_DATA_PATH = 'data/F1_ALL_DATA_2020_2025.csv'
+TEAMS_DATA_PATH = 'data/teams_summary.csv'
+
+# Chemins pour le modèle (non utilisé dans cette page mais bon à avoir)
+MODEL_PATH = 'f1_prediction_model.joblib'
+FEATURE_COLUMNS_PATH = 'feature_columns.json'
