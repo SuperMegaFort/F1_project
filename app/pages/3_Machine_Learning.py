@@ -148,7 +148,7 @@ def display_predicted_grid(results_df):
 
 # Define paths for the saved model, features, and the ML-specific dataset
 MODEL_DIR = "models"
-MODEL_PATH = os.path.join(MODEL_DIR, "ranking_regressor.joblib")
+MODEL_PATH = os.path.join(MODEL_DIR, "f1_lgbm_model.joblib")
 FEATURES_PATH = os.path.join(MODEL_DIR, "feature_columns.json")
 ML_DATA_PATH = "data/F1_ALL_DATA_2020_2025.csv"
 
@@ -219,11 +219,16 @@ else:
                         if features_df.empty:
                             st.error("Impossible de générer les caractéristiques pour la prédiction.")
                         else:
-                            try:
-                                X_pred = features_df[features]
-                            except KeyError as e:
-                                st.error(f"Erreur: Colonne manquante : {e}")
-                                X_pred = None
+                            # 1. Identifier les colonnes qui manquent dans notre dataframe de prédiction
+                            missing_cols = set(features) - set(features_df.columns)
+                            
+                            # 2. Ajouter les colonnes manquantes et les initialiser à 0
+                            for c in missing_cols:
+                                features_df[c] = 0
+                            
+                            # 3. S'assurer que les colonnes sont dans le même ordre que celui attendu par le modèle
+                            # C'est l'étape cruciale qui résout l'erreur et prévient les erreurs de prédiction.
+                            X_pred = features_df[features]
 
                             if X_pred is not None:
                                 predicted_values = model.predict(X_pred)
