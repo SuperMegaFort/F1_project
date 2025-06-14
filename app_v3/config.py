@@ -30,3 +30,6 @@ MODEL_DIR.mkdir(exist_ok=True)
 # Fichiers du modèle
 MODEL_PATH = MODEL_DIR / "f1_lgbm_model.joblib"
 FEATURE_COLUMNS_PATH = MODEL_DIR / "feature_columns.json"
+
+
+

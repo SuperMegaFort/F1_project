@@ -26,7 +26,6 @@ def run_prediction(model, training_feature_columns, full_dataset, year, race_nam
         if features_df_raw.empty: return "Impossible de générer les features."
         
         # 3. Appliquer le One-Hot Encoding
-        # CORRECTION : On ne one-hot encode plus 'driver_code'
         categorical_features = ['team', 'race_name']
         features_df_encoded = pd.get_dummies(features_df_raw, columns=categorical_features, prefix=categorical_features)
         
