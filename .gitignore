@@ -6,3 +6,5 @@ app_v2
 __pycache__
 app/__pycache__
 cache
+
+!app/data/*.csv
