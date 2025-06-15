@@ -1,4 +1,4 @@
-# pages/3_Circuits.py
+# pages/4_Circuits_Details.py (ou le nom que vous souhaitez)
 
 import streamlit as st
 import pandas as pd
@@ -7,71 +7,93 @@ import os
 # --- Configuration de la Page ---
 st.set_page_config(
     layout="wide",
-    page_title="Infos Circuits F1",
+    page_title="Détails des Circuits F1",
     page_icon="🌍"
 )
 
-st.title("🌍 Explorez les Circuits de Formule 1")
+st.title("🌍 Explorez les Circuits du Championnat")
+st.markdown("Retrouvez les informations clés et les records pour chaque circuit de la saison.")
 st.markdown("---")
 
-# --- Chargement des données (avec mise en cache pour la performance) ---
-@st.cache_data
-def load_circuits_data():
-    """Charge les données des circuits depuis le fichier CSV."""
-    file_path = 'data/circuits_data.csv'
-    if not os.path.exists(file_path):
-        st.error(f"Le fichier '{file_path}' est introuvable. Veuillez d'abord exécuter le script `extract_circuits_from_cache.py`.")
+# --- Configuration des chemins ---
+# Adaptez ce chemin si votre CSV est dans un autre dossier
+# Le nom du fichier inclut l'année, pensez à l'adapter si nécessaire
+YEAR_TO_DISPLAY = 2024
+CIRCUITS_DATA_PATH = os.path.join("data", f"f1_circuits_{YEAR_TO_DISPLAY}.csv")
+
+# --- Fonction de chargement des données (avec cache) ---
+@st.cache_data(ttl="6h")
+def load_circuits_data(path):
+    """Charge les données des circuits depuis le fichier CSV généré par le scraper."""
+    if not os.path.exists(path):
+        st.error(f"Le fichier de données des circuits '{path}' est introuvable.")
+        st.warning("Veuillez d'abord exécuter le script `crawler_circuits.py` pour générer ce fichier.")
         return None
     
     try:
-        df = pd.read_csv(file_path)
+        df = pd.read_csv(path)
+        # Nettoyage des données pour un affichage propre
+        df.fillna({
+            'length_km': 0,
+            'laps': 0,
+            'lap_record_time': 'N/A',
+            'lap_record_driver': 'N/A',
+            'first_gp': 'N/A',
+            'image_url': '',
+            'country_flag_url': ''
+        }, inplace=True)
         return df
     except Exception as e:
         st.error(f"Une erreur est survenue lors de la lecture du fichier CSV : {e}")
         return None
 
 # --- Application Principale ---
-circuits_df = load_circuits_data()
+circuits_df = load_circuits_data(CIRCUITS_DATA_PATH)
 
-if circuits_df is not None:
-    # Trier les circuits par nom pour une sélection plus facile
-    circuit_list = circuits_df['circuitName'].sort_values().tolist()
+if circuits_df is not None and not circuits_df.empty:
     
-    # Créer une liste déroulante dans la barre latérale pour choisir un circuit
-    with st.sidebar:
-        st.header("Filtres")
-        selected_circuit_name = st.selectbox(
-            'Choisissez un circuit :',
-            circuit_list
-        )
+    # Trier les circuits par leur nom pour un affichage alphabétique
+    circuits_df.sort_values('circuit_name', inplace=True)
 
-    # Récupérer la ligne de données pour le circuit sélectionné
-    circuit_data = circuits_df[circuits_df['circuitName'] == selected_circuit_name].iloc[0]
-
-    # --- Affichage des informations détaillées ---
-    st.header(f"📍 {circuit_data['circuitName']}")
+    # Définir le nombre de colonnes pour la galerie
+    cols = st.columns(2)
     
-    # Organiser l'affichage en deux colonnes
-    col1, col2 = st.columns([2, 1]) # 2/3 de la largeur pour l'image, 1/3 pour les métriques
+    # Itérer sur les données pour créer une carte par circuit
+    for index, circuit in circuits_df.iterrows():
+        col = cols[index % 2] # Assigner la carte à une colonne (gauche/droite)
 
-    with col1:
-        # Afficher l'image du tracé du circuit
-        st.image(
-            circuit_data['imageUrl'],
-            caption=f"Tracé du circuit {circuit_data['circuitName']}"
-        )
+        with col:
+            with st.container(border=True):
+                # Header de la carte avec le drapeau et le nom
+                col1, col2 = st.columns([1, 4])
+                with col1:
+                    if circuit['country_flag_url']:
+                        st.image(circuit['country_flag_url'], width=60)
+                with col2:
+                    st.subheader(circuit['circuit_name'])
 
-    with col2:
-        # Afficher les informations clés avec st.metric pour un look propre
-        st.metric("Pays", circuit_data['country'])
-        st.metric("Ville / Région", circuit_data['locality'])
-        st.metric("Longueur du Circuit", f"{circuit_data['circuitLengthKm']:.3f} km")
-        st.metric("Nombre de Virages", f"{int(circuit_data['corners'])}")
-        
-        st.markdown("---")
-        st.subheader("Meilleur Tour en Course")
-        st.metric("Pilote", circuit_data['bestLapDriver'])
-        st.metric("Temps", circuit_data['bestLapTimeStr'])
-        st.caption(f"Données de la saison {circuit_data['sourceYear']}")
+                # Tracé du circuit
+                if circuit['image_url']:
+                    st.image(circuit['image_url'], use_container_width=True)
+                else:
+                    st.image("https://placehold.co/600x400/F0F2F6/E10600?text=Tracé\\nIndisponible", use_container_width=True)
+
+                st.markdown("---")
+
+                # Affichage des statistiques principales avec st.metric
+                m_cols = st.columns(3)
+                m_cols[0].metric("Longueur", f"{circuit.get('length_km', 0)} km")
+                m_cols[1].metric("Tours", f"{int(circuit.get('laps', 0))}")
+                m_cols[2].metric("Premier GP", str(circuit.get('first_gp', 'N/A')))
+                
+                # Expander pour le record du tour
+                with st.expander("Record du Tour"):
+                    st.metric("Temps Record", str(circuit.get('lap_record_time', 'N/A')))
+                    st.caption(f"Par : {circuit.get('lap_record_driver', 'N/A')}")
+
 else:
-    st.info("En attente du chargement des données des circuits...")
+    st.info("En attente des données des circuits. Le fichier CSV est peut-être en cours de création.")
+
+# Pied de page
+st.markdown("---")
+st.caption("Données collectées via le scraper de circuits personnalisé.")

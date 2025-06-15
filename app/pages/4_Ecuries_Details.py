@@ -1,106 +1,114 @@
-# pages/2_Ecuries_Details.py
+# pages/3_Pilotes_Details.py
 
 import streamlit as st
 import pandas as pd
-# Assurez-vous que le fichier config.py est au bon endroit
-from utils import HISTORICAL_DATA_PATH, TEAMS_DATA_PATH
+import os # Ajout pour la gestion des chemins de fichiers
+
+# --- Configuration des chemins ---
+# Adaptez ce chemin si votre fichier CSV est dans un autre dossier
+DRIVERS_DATA_PATH = os.path.join("data", "f1_drivers_all.csv")
 
 # --- Configuration de la Page ---
 st.set_page_config(
     layout="wide",
-    page_title="Détails des Écuries",
-    page_icon="🏎️"
+    page_title="Détails des Pilotes F1",
+    page_icon="🧑‍🚀" # Icône de pilote
 )
 
-st.title("🏎️ Détails des Écuries par Saison")
+st.title("🧑‍🚀 Galerie des Pilotes de Formule 1")
+st.markdown("Explorez les informations détaillées sur chaque pilote, regroupées par écurie.")
 st.markdown("---")
 
 
-# --- Fonctions de chargement des données (avec cache) ---
-# Ces fonctions sont reprises de votre app.py pour que la page soit autonome
+# --- Fonction de chargement des données (avec cache pour la performance) ---
 @st.cache_data(ttl="6h")
-def load_main_dataset():
-    """Charge le grand fichier de données F1 pour obtenir la liste des années."""
+def load_drivers_data(path):
+    """Charge les données des pilotes depuis le fichier CSV."""
     try:
-        df = pd.read_csv(HISTORICAL_DATA_PATH)
+        df = pd.read_csv(path)
+        # Nettoyage simple : Remplacer les N/A par des chaînes vides ou des zéros
+        df.fillna({
+            'team': 'Écurie Inconnue', # Donner un nom par défaut
+            'country': 'N/A',
+            'podiums': 0,
+            'points': 0,
+            'main_image_url': ''
+        }, inplace=True)
         return df
     except FileNotFoundError:
-        st.error(f"Dataset principal introuvable ! Assurez-vous que '{HISTORICAL_DATA_PATH}' existe.")
-        return None
-
-@st.cache_data(ttl="6h")
-def load_teams_data():
-    """Charge le fichier récapitulatif des écuries."""
-    try:
-        df = pd.read_csv(TEAMS_DATA_PATH)
-        return df
-    except FileNotFoundError:
-        st.error(f"Fichier de données des écuries introuvable ! Assurez-vous que le chemin '{TEAMS_DATA_PATH}' est correct.")
+        st.error(f"Fichier des pilotes introuvable ! Assurez-vous que le chemin '{path}' est correct.")
         return None
 
 # --- Chargement des données ---
-full_data = load_main_dataset()
-teams_summary = load_teams_data()
+drivers_df = load_drivers_data(DRIVERS_DATA_PATH)
 
-# --- Barre Latérale (Sidebar) pour les filtres ---
-# Le filtre par année est nécessaire pour cette page
-if full_data is not None:
-    with st.sidebar:
-        st.header("Filtres")
-        # Permet la sélection de toutes les années disponibles
-        display_years = sorted(full_data['year'].unique(), reverse=True)
-        selected_year = st.selectbox(
-            "Choisissez une année :",
-            options=display_years,
-            key="year_selector" # Une clé unique est une bonne pratique
-        )
+if drivers_df is None:
+    st.warning("Les données des pilotes n'ont pas pu être chargées. Le scraper a-t-il bien été exécuté ?")
+    st.stop() # Arrête l'exécution si le fichier est introuvable
+
+
+# --- Affichage principal regroupé par écurie ---
+# Obtenir la liste unique des écuries et la trier
+teams_list = sorted(drivers_df['team'].unique())
+
+if not teams_list:
+    st.info("Aucune écurie trouvée dans les données.")
 else:
-    st.sidebar.warning("Données principales non chargées, impossible d'afficher les filtres.")
-    # Arrête l'exécution si les données ne sont pas là
-    st.stop()
-
-
-# --- Affichage principal de la page ---
-st.header(f"Performance des Écuries en {selected_year}")
-
-if teams_summary is not None:
-    # On filtre les données des écuries avec l'année sélectionnée dans la sidebar
-    year_teams_data = teams_summary[teams_summary['Year'] == selected_year]
-
-    if not year_teams_data.empty:
-        # Trier les écuries par le total de points pour un affichage ordonné
-        sorted_teams = year_teams_data[['TeamName', 'TeamPoints']].drop_duplicates().sort_values(
-            by='TeamPoints',
-            ascending=False
-        )
+    # Boucler sur chaque écurie pour créer une section dédiée
+    for team in teams_list:
+        st.header(f"🏎️ {team}")
         
-        # Créer un expander pour chaque écurie
-        for _, team_row in sorted_teams.iterrows():
-            team_name = team_row['TeamName']
-            team_points = team_row['TeamPoints']
+        # Filtrer les pilotes pour l'écurie actuelle
+        team_drivers_df = drivers_df[drivers_df['team'] == team].sort_values(by="full_name")
+        
+        # Définir le nombre de colonnes pour la galerie
+        cols = st.columns(3) 
+        
+        # CORRECTION : Utiliser enumerate pour obtenir un index stable (0, 1, 2...)
+        # Cela garantit que les pilotes sont placés dans les colonnes dans le bon ordre.
+        for i, (index, driver) in enumerate(team_drivers_df.iterrows()):
+            # Placer chaque pilote dans une colonne en utilisant l'index de l'énumération
+            col = cols[i % 3] 
             
-            with st.expander(f"**{team_name}** - {int(team_points)} points"):
-                st.subheader("Pilotes de la saison")
-                
-                # Filtrer les données pour l'écurie actuelle et trier les pilotes par points
-                drivers_df = year_teams_data[year_teams_data['TeamName'] == team_name].sort_values(
-                    by='DriverPoints',
-                    ascending=False
-                )
-                
-                # Afficher le DataFrame des pilotes
-                st.dataframe(
-                    drivers_df[['DriverName', 'Abbreviation', 'DriverPoints']],
-                    use_container_width=True,
-                    hide_index=True,
-                    column_config={
-                        "DriverName": "Pilote",
-                        "Abbreviation": "Code",
-                        "DriverPoints": "Points"
-                    }
-                )
-                st.caption("Cette liste inclut tous les pilotes (y compris les remplaçants) ayant participé pour l'écurie durant la saison.")
-    else:
-        st.warning(f"Aucune donnée détaillée sur les écuries n'a été trouvée pour {selected_year}.")
-else:
-    st.error("Les données récapitulatives des écuries n'ont pas pu être chargées.")
+            with col:
+                # Conteneur pour un effet de "carte" avec une bordure
+                with st.container(border=True):
+                    
+                    # Afficher l'image du pilote, avec une image de secours si l'URL est manquante
+                    if pd.notna(driver['main_image_url']) and driver['main_image_url']:
+                        st.image(
+                            driver['main_image_url'], 
+                            caption=f"{driver['full_name']}",
+                            use_container_width=True
+                        )
+                    else:
+                        # Image de secours
+                        st.image(
+                            "https://placehold.co/400x300/F0F2F6/E10600?text=Image\\nNon\\nDisponible", 
+                            caption=f"{driver['full_name']}",
+                            use_container_width=True
+                        )
+
+                    # Nom et numéro
+                    st.subheader(f"{driver['full_name']} `#{driver['driver_number']}`")
+
+                    # Statistiques clés avec st.metric pour un affichage impactant
+                    m_cols = st.columns(2)
+                    m_cols[0].metric(label="Pays", value=str(driver['country']))
+                    m_cols[1].metric(label="Points", value=int(driver.get('points', 0)))
+                    
+                    # Expander pour les détails moins importants
+                    with st.expander("Plus d'informations"):
+                        st.markdown(f"**Date de naissance :** {driver.get('date_of_birth', 'N/A')}")
+                        st.markdown(f"**Lieu de naissance :** {driver.get('place_of_birth', 'N/A')}")
+                        st.markdown(f"**Podiums :** {int(driver.get('podiums', 0))}")
+                        st.markdown(f"**Grands Prix disputés :** {driver.get('grands_prix_entered', 'N/A')}")
+                        st.markdown(f"**Championnats du monde :** {driver.get('world_championships', 'N/A')}")
+                        st.markdown(f"**Meilleur résultat en course :** {driver.get('highest_race_finish', 'N/A')}")
+                        st.markdown(f"**Meilleure position sur la grille :** {driver.get('highest_grid_position', 'N/A')}")
+        
+        # Ajouter un séparateur entre chaque écurie
+        st.markdown("---")
+
+# Pied de page
+st.caption("Données collectées via le scraper personnalisé.")
