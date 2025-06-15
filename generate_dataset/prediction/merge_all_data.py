@@ -68,7 +68,7 @@ def merge_all_historical_data():
         
         # --- 3. Sauvegarder le grand fichier final ---
         # On le sauvegarde dans le même dossier pour la simplicité
-        output_path = HISTORICAL_DATA_DIR / "F1_ALL_DATA_2020_2024.csv"
+        output_path = HISTORICAL_DATA_DIR / "F1_ALL_DATA_2019_2024.csv"
         merged_df.to_csv(output_path, index=False)
         
         print(f"\n✅ Fusion terminée ! Le jeu de données complet est sauvegardé ici :")

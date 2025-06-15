@@ -16,8 +16,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 from webdriver_manager.chrome import ChromeDriverManager
 
-START_YEAR = 2025
-END_YEAR = 2025
+START_YEAR = 2019
+END_YEAR = 2024
 
 BASE_URL = "https://www.formula1.com"
 RESULTS_BASE_URL = f"{BASE_URL}/en/results.html"
